@@ -34,7 +34,8 @@ class FeatureExtractor(object):
                 df.loc[date,'holiday'] = 1
 
 
-        X_df = pd.get_dummies(df[['day_of_week','month','day_of_month','holiday']].applymap(str))
+        X_df = pd.get_dummies(df[['day_of_week','month','day_of_month']].applymap(str))
+        X_df['holiday']=df['holiday']  
         X_df['year'] = df['year'] #year variable is not treated as a categorical variable, so it's not one-hot encoded
 
         poly_transformer = PolynomialFeatures(degree=2, interaction_only=False,include_bias=True).fit(X_df.values)
