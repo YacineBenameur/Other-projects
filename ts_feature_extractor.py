@@ -19,6 +19,7 @@ class FeatureExtractor(object):
         df['time'] = pd.to_datetime(X_ds['time'].values)
         df = df.iloc[X_ds.n_burn_in:,:]
         
+        df['year'] = [d.year for d in df['time']]
         df['month'] = [d.month for d in df['time']]
         df['day_of_week'] = [d.weekday() for d in df['time']]
         df['day_of_month'] = [d.day for d in df['time']]
