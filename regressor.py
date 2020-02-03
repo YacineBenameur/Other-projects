@@ -1,4 +1,4 @@
-
+from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestRegressor
 
 regressor = RandomForestRegressor(n_estimators=50, random_state=0)
