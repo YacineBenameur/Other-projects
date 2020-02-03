@@ -15,7 +15,7 @@ class FeatureExtractor(object):
         
         """
         df = X_ds.to_dataframe()
-        df['time'] = pd.to_datetime(list(X_ds['time']))
+        df['time'] = pd.to_datetime(X_ds['time'].values)
         df = df.iloc[X_ds.n_burn_in:,:]
         
         df['year'] = [d.year for d in df['time']]
