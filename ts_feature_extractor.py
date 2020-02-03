@@ -1,6 +1,3 @@
-import sys
-!conda install --yes --prefix {sys.prefix} holidays
-
 import numpy as np
 import pandas as pd
 import holidays
