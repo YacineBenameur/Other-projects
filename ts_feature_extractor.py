@@ -1,4 +1,5 @@
-!pip install holidays
+import sys
+!conda install --yes --prefix {sys.prefix} numpy
 
 import numpy as np
 import pandas as pd
