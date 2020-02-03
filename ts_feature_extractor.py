@@ -4,7 +4,6 @@ import holidays
 from sklearn.preprocessing import PolynomialFeatures
 
 class FeatureExtractor(object):
-
     def __init__(self):
         pass
 
