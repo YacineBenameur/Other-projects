@@ -1,18 +1,13 @@
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestRegressor
-from rampwf.hyperopt import Hyperparameter
 
-# RAMP START HYPERPARAMETERS                                          
-n_estimators = Hyperparameter(                                            
-    dtype='int', default=150, values=[100, 150, 200])               
-max_leaf_nodes = Hyperparameter(
-    dtype='int', default=50, values=[20, 50, 70])
-# RAMP END HYPERPARAMETERS                                            
+regressor = RandomForestRegressor(n_estimators=100, random_state=0)
+
+               
 
 class Regressor(BaseEstimator):
     def fit(self, X, y):
-        self.reg = RandomForestRegressor(
-        	n_estimators=int(n_estimators), max_leaf_nodes=int(max_leaf_nodes))
+        self.reg = RandomForestRegressor(n_estimators=100, random_state=0)
         self.reg.fit(X, y)
 
     def predict(self, X):
