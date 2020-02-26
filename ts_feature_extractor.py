@@ -22,6 +22,10 @@ class FeatureExtractor(object):
         weekly_rolling_mean = X_df.rolling(7).mean().values[valid_range]
         yearly_rolling_mean = X_df.rolling(356).mean().values[valid_range]
         yesterday = np.roll(X_df.values, 1, axis=0)[valid_range]
+        yesterday_2 = np.roll(X_df.values, 2, axis=0)[valid_range]
+        yesterday_3 = np.roll(X_df.values, 3, axis=0)[valid_range]
+        yesterday_4 = np.roll(X_df.values, 4, axis=0)[valid_range]
+        yesterday_5 = np.roll(X_df.values, 5, axis=0)[valid_range]
         week_ago = np.roll(X_df.values, 6, axis=0)[valid_range]
         month_ago = np.roll(X_df.values, 30, axis=0)[valid_range]
         month_ago_2 = np.roll(X_df.values, 31, axis=0)[valid_range]
@@ -50,6 +54,10 @@ class FeatureExtractor(object):
             month_ago,
             month_ago_2,
             yesterday,
+            yesterday_2,
+            yesterday_3,
+            yesterday_4,
+            yesterday_5,
             weekly_rolling_mean,
             yearly_rolling_mean,
             day_of_week,
