@@ -36,6 +36,7 @@ class FeatureExtractor(object):
         
         df = X_ds.to_dataframe()
         df['time'] = pd.to_datetime(X_ds['time'].values)
+        df['day_of_month'] = [d.day for d in df['time']]
         
         GH = holidays.France()
 
@@ -56,5 +57,6 @@ class FeatureExtractor(object):
             monthly_weekday_rolling_mean,
             day_of_week,
             store_id,
-            df['holiday'].values[valid_range]
+            df['holiday'].values[valid_range].reshape((-1,1))
+            df['day_of_month'].values[valid_range].reshape((-1,1))
         ])
