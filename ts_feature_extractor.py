@@ -56,5 +56,5 @@ class FeatureExtractor(object):
             monthly_weekday_rolling_mean,
             day_of_week,
             store_id,
-            df['holiday'].values
+            df['holiday'].values[valid_range]
         ])
