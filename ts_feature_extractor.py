@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import holidays
 
 
 class FeatureExtractor(object):
@@ -32,6 +33,18 @@ class FeatureExtractor(object):
             for i in range(7)]).sort_index().values, 6, axis=0)[valid_range]
         day_of_week = np.tile(X_df.index.dayofweek.values, (X_df.shape[1], 1)).T[valid_range]
         store_id = np.tile(np.arange(X_df.shape[1]), (valid_range.shape[0], 1))
+        
+        df = X_ds.to_dataframe()
+        df['time'] = pd.to_datetime(X_ds['time'].values)
+        
+        GH = holidays.France()
+
+        df['holiday'] = 0
+
+        for date in df.index:
+            if date in GH:
+                df.loc[date,'holiday'] = 1
+                
         return np.hstack([
             year_ago,
             week_ago,
@@ -43,4 +56,5 @@ class FeatureExtractor(object):
             monthly_weekday_rolling_mean,
             day_of_week,
             store_id,
+            df['holiday'].values
         ])
