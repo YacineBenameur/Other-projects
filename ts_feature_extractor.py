@@ -25,12 +25,6 @@ class FeatureExtractor(object):
         week_ago = np.roll(X_df.values, 6, axis=0)[valid_range]
         week_ago_2 = np.roll(X_df.values, 7, axis=0)[valid_range]
         year_ago = np.roll(X_df.values, 7 * 52 - 1, axis=0)[valid_range]
-        yearly_weekday_rolling_mean = np.roll(pd.concat(
-            [X_df[X_df.index.dayofweek==i].rolling(52).mean()
-            for i in range(7)]).sort_index().values, 6, axis=0)[valid_range]
-        monthly_weekday_rolling_mean = np.roll(pd.concat(
-            [X_df[X_df.index.dayofweek==i].rolling(4).mean()
-            for i in range(7)]).sort_index().values, 6, axis=0)[valid_range]
         day_of_week = np.tile(X_df.index.dayofweek.values, (X_df.shape[1], 1)).T[valid_range]
         store_id = np.tile(np.arange(X_df.shape[1]), (valid_range.shape[0], 1))
         
@@ -53,8 +47,6 @@ class FeatureExtractor(object):
             yesterday,
             weekly_rolling_mean,
             yearly_rolling_mean,
-            yearly_weekday_rolling_mean,
-            monthly_weekday_rolling_mean,
             day_of_week,
             store_id,
             df['holiday'].values[valid_range].reshape((-1,1)),
