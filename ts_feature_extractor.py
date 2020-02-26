@@ -22,6 +22,7 @@ class FeatureExtractor(object):
         yearly_rolling_mean = X_df.rolling(356).mean().values[valid_range]
         yesterday = np.roll(X_df.values, 1, axis=0)[valid_range]
         week_ago = np.roll(X_df.values, 6, axis=0)[valid_range]
+        week_ago_2 = np.roll(X_df.values, 7, axis=0)[valid_range]
         year_ago = np.roll(X_df.values, 7 * 52 - 1, axis=0)[valid_range]
         yearly_weekday_rolling_mean = np.roll(pd.concat(
             [X_df[X_df.index.dayofweek==i].rolling(52).mean()
@@ -34,6 +35,7 @@ class FeatureExtractor(object):
         return np.hstack([
             year_ago,
             week_ago,
+            week_ago_2,
             yesterday,
             weekly_rolling_mean,
             yearly_rolling_mean,
