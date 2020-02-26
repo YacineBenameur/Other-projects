@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import holidays
 
+
 class FeatureExtractor(object):
 
     def __init__(self):
@@ -14,16 +15,30 @@ class FeatureExtractor(object):
         """
         
         """
+        # This is the range for which features should be provided. Strip
+        # the burn-in from the beginning.
+        valid_range = np.arange(X_ds.n_burn_in, len(X_ds['time']))
+        X_df = X_ds.to_dataframe()
+        weekly_rolling_mean = X_df.rolling(7).mean().values[valid_range]
+        yearly_rolling_mean = X_df.rolling(356).mean().values[valid_range]
+        yesterday = np.roll(X_df.values, 1, axis=0)[valid_range]
+        week_ago = np.roll(X_df.values, 6, axis=0)[valid_range]
+        year_ago = np.roll(X_df.values, 7 * 52 - 1, axis=0)[valid_range]
+        yearly_weekday_rolling_mean = np.roll(pd.concat(
+            [X_df[X_df.index.dayofweek==i].rolling(52).mean()
+            for i in range(7)]).sort_index().values, 6, axis=0)[valid_range]
+        monthly_weekday_rolling_mean = np.roll(pd.concat(
+            [X_df[X_df.index.dayofweek==i].rolling(4).mean()
+            for i in range(7)]).sort_index().values, 6, axis=0)[valid_range]
+        day_of_week = np.tile(X_df.index.dayofweek.values, (X_df.shape[1], 1)).T[valid_range]
+        store_id = np.tile(np.arange(X_df.shape[1]), (valid_range.shape[0], 1))
+        
         df = X_ds.to_dataframe()
         df['time'] = pd.to_datetime(X_ds['time'].values)
-        
         df = df.iloc[X_ds.n_burn_in:,:]
         
-        previous_values = df.shift(1).dropna().values
-        df = df.iloc[1:,:]
-        
         df['month'] = [d.month for d in df['time']]
-        df['day_of_week'] = [d.weekday() for d in df['time']]
+
         df['day_of_month'] = [d.day for d in df['time']]
         
         # dummy variable for holiday
@@ -35,7 +50,19 @@ class FeatureExtractor(object):
         for date in df.index:
             if date in GH:
                 df.loc[date,'holiday'] = 1
-
-
-        
-        return np.hstack((df[['day_of_week','month','day_of_month','holiday']].values,previous_values)
+                
+        return np.hstack([
+            year_ago,
+            week_ago,
+            yesterday,
+            weekly_rolling_mean,
+            yearly_rolling_mean,
+            yearly_weekday_rolling_mean,
+            monthly_weekday_rolling_mean,
+            day_of_week,
+            store_id,
+            df['holiday'].values,
+            df['day_of_month'].values,
+            df['month'].values
+            
+        ])
