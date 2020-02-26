@@ -56,5 +56,5 @@ class FeatureExtractor(object):
             store_id,
             df['holiday'].values[valid_range].reshape((-1,1)),
             df['day_of_month'].values[valid_range].reshape((-1,1)),
-             df['month'].values[valid_range].reshape((-1,1)),
+            df['month'].values[valid_range].reshape((-1,1)),
         ])
