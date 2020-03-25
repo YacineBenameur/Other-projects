@@ -1,1 +1,1 @@
-# Time-Series-Project
+# Small projects and notebooks just for fun
